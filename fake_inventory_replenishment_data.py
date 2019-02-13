@@ -11,6 +11,8 @@ from faker import Faker
 from random import randrange
 import json
 import csv
+import zipcodes
+
 #from kafka import KafkaProducer
 
 class switch(object):
@@ -52,21 +54,11 @@ uom = ['box','pallet', 'pack', 'barrel', 'bag']
 commercial_shipping = ['usps','dhl','fedex', 'ups']
 zips = [55328, 55329, 55330, 55331, 55332, 55333, 55334, 55335, 55336, 55337, 55338, 55339, 55340, 55341, 55342, 55343, 55344, 55345, 55346, 55347, 55348, 55349, 55350, 55352, 55353, 55354, 55355, 55356, 55357, 55358, 55359, 55360, 55361, 55362, 55363, 55364, 55365, 55366, 55367, 55368, 55369, 55370, 55371, 55372, 55373, 55374, 55375, 55376, 55377, 55378, 55379, 55380, 55381, 55382, 55383, 55384, 55385, 55386, 55387, 55388, 55389, 55390, 55391, 55392, 55393, 55394, 55395, 55396, 55397, 55398, 55399, 55401]
 
-outFileName = 'data_file_'+timestr+'.data'
-
 f = None
-try:
-    for case in switch(output_type):
-		if case('LOG'):
-			f = open(outFileName,'w')
-			break
-		if case('GZ'):
-			f = gzip.open(outFileName+'.gz','w')
-			break
-		if case('CONSOLE'): pass
-		if case():
-			f = sys.stdout
 
+try:
+
+    f = sys.stdout
     stores = {}
     for i in range(0,30):
         st = {}
@@ -144,12 +136,12 @@ try:
 
         #producer = KafkaProducer(bootstrap_servers='172.17.0.2:9092,172.17.0.3:9092,172.17.0.4:9092', #value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         #producer.send(b'Inventory', json.dumps(product))
-
-        print json.dumps(order)
-
+        print(json.dumps(order))
+        #f.write(json.dumps(order))
+        #print (order)
         log_lines = log_lines - 1
         flag = False if log_lines == 0 else True
 
 finally:
     if f is not None:
-	f.close()
+        f.close()
