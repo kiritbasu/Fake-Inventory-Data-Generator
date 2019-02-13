@@ -11,7 +11,6 @@ from faker import Faker
 from random import randrange
 import json
 import csv
-import zipcodes
 
 #from kafka import KafkaProducer
 
