@@ -46,6 +46,9 @@ otime = datetime.datetime.now()
 cc_types = ['visa','mastercard','amex','discover','diners']
 ualist = [faker.firefox(), faker.chrome(), faker.safari(), faker.internet_explorer(), faker.opera()]
 service_list = ['manual', 'amazon','dhl','fedex']
+product_ids = [12534225, 16734225, 12538655, 12534567]
+cities = ['Hampden', 'Essex', 'Bristol', 'Barnstable', 'Suffolk', 'Norfolk', 'Plymouth', 'Middlesex']
+
 
 #outFileName = 'data_file_'+timestr+'.data'
 
@@ -73,11 +76,11 @@ try:
         billing_address = {}
         billing_address['address1'] = faker.street_address()
         billing_address['address2'] = faker.secondary_address()
-        billing_address['city'] = faker.city()
+        billing_address['city'] = random.choice(cities)
         billing_address['company'] = faker.company()
 
         creditcard_info = {}
-        creditcard_info['transaction_date'] = time.strftime("%m/%d/%Y")
+        creditcard_info['transaction_date'] = faker.date_this_year(before_today=True, after_today=False).strftime("%m/%d/%Y")
         creditcard_info['card_number'] = faker.credit_card_number(card_type=cc_type)
         creditcard_info['card_expiry_date'] = faker.credit_card_expire(start="now", end="+10y", date_format="%m/%y")
         creditcard_info['card_security_code'] = faker.credit_card_security_code(card_type=cc_type)
@@ -90,28 +93,22 @@ try:
         client_details['session_hash'] = faker.sha1(raw_output=False)
 
 
-        fulfilment = {}
+        fulfillment = {}
 
-        fulfilment['fulfillable_quantity'] = 1
-        fulfilment['fulfillment_service'] = random.choice(service_list)
-        fulfilment['fulfillment_status'] = 'fulfilled'
-        fulfilment['grams'] = round(random.uniform(1, 1000),2)
-        fulfilment['id'] = faker.ean13()
-        fulfilment['total_price'] = round(purchase_amount,2)
+        fulfillment['fulfillable_quantity'] = 1
+        fulfillment['fulfillment_service'] = random.choice(service_list)
+        fulfillment['fulfillment_status'] = 'fulfilled'
+        fulfillment['grams'] = round(random.uniform(1, 1000),2)
+        fulfillment['id'] = faker.ean13()
+        fulfillment['total_price'] = round(purchase_amount,2)
 
         products = {}
 
-        products['product_id'] = faker.ean13()
+        products['product_id'] = random.choice(product_ids)
         products['quantity'] = random.randint(1, 10)
         products['requires_shipping'] = 1
-        products['sku'] = 'IPOD-342-N'
-        products['title'] = 'IPod Nano'
-        products['variant_id'] = 4264112
-        products['variant_title'] = 'Pink'
-        products['vendor'] = 'Apple'
-        products['name'] = 'IPod Nano - Pink'
 
-        fulfilment['products'] = products
+        fulfillment['products'] = products
 
         shopper_profile = {}
 
@@ -124,7 +121,7 @@ try:
         order['billing_address'] = billing_address
         order['credit_card'] = creditcard_info
         order['web_client_details'] = client_details
-        order['fulfilment'] = fulfilment
+        order['fulfillment'] = fulfillment
         order['shopper'] = shopper_profile
         order['buyer_accepts_marketing'] = faker.boolean(chance_of_getting_true=50)
         order['cart_token'] = faker.uuid4()
