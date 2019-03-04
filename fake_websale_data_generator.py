@@ -46,7 +46,6 @@ otime = datetime.datetime.now()
 cc_types = ['visa','mastercard','amex','discover','diners']
 ualist = [faker.firefox(), faker.chrome(), faker.safari(), faker.internet_explorer(), faker.opera()]
 service_list = ['manual', 'amazon','dhl','fedex']
-product_ids = [12534225, 16734225, 12538655, 12534567]
 cities = ['Hampden', 'Essex', 'Bristol', 'Barnstable', 'Suffolk', 'Norfolk', 'Plymouth', 'Middlesex']
 
 
@@ -64,6 +63,16 @@ try:
     else:
         f = sys.stdout
     '''
+
+    # Create a bunch of session ids
+    sessions = []
+    for x in range(0, 100):
+        sessions.append(faker.sha1(raw_output=False))
+
+    # Create a bunch of product ids
+    product_ids = []
+    for x in range(0, 100):
+        product_ids.append(faker.msisdn())
 
     f = sys.stdout
     flag = True
@@ -90,7 +99,7 @@ try:
         client_details = {}
         client_details['browser_ip'] = faker.ipv4()
         client_details['user_agent'] = random.choice(ualist)
-        client_details['session_hash'] = faker.sha1(raw_output=False)
+        client_details['session_id'] = random.choice(sessions)
 
 
         fulfillment = {}
